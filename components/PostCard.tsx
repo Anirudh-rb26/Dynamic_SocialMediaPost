@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { Button } from "./ui/MovingBorders";
 import Loader from "./ui/Loader";
+import { generateImage } from "@/lib/ImageGenerator";
 
 interface PostProps {
   title: string;
@@ -11,53 +12,26 @@ interface PostProps {
   imageUrl?: string;
 }
 
-const Post = ({ title, description, imageUrl }: PostProps) => {
+const PostCard: React.FC<PostProps> = ({ title, description, imageUrl }) => {
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false); // State for loading indicator
 
-  const generateImage = async (title: string, description: string) => {
+  const handleGenerateImage = async (title: string, description: string) => {
     setIsLoading(true); // Set loading state to true
     console.log("Generate Image button clicked");
 
-    const prompt = `Generate an image based on the following title and description of a twitter post, Title: ${title}. Description: ${description}. Focus on the main subject and convey the overall mood.`;
-
-    const data = { inputs: prompt };
-
-    try {
-      const response = await fetch(
-        "https://api-inference.huggingface.co/models/ZB-Tech/Text-to-Image",
-        {
-          headers: {
-            Authorization: "Bearer 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",
-            "Content-Type": "application/json",
-          },
-          method: "POST",
-          body: JSON.stringify(data),
-        }
-      );
-
-      console.log("API request sent");
-
-      if (!response.ok) {
-        throw new Error("Failed to generate image");
-      }
-
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
+    const url = await generateImage(title, description); // Call the function from lib
+    if (url) {
       setGeneratedImage(url);
       console.log("Image generated and URL set:", url);
-    } catch (error) {
-      console.error("Error generating image:", error);
-      // Handle errors appropriately (e.g., display an error message)
-    } finally {
-      setIsLoading(false); // Set loading state back to false (important!)
     }
+    setIsLoading(false); // Set loading state back to false
   };
 
   return (
-    <div className="flex flex-col p-4 border rounded-2xl bg-gray-950">
+    <div className="bg-gray-900 p-6 rounded-lg shadow-lg mb-6">
       {/* Profile Information */}
-      <div className="flex items-center">
+      <div className="flex items-center mb-4">
         {/* Profile Picture */}
         <Image
           src="/profile.svg"
@@ -68,18 +42,18 @@ const Post = ({ title, description, imageUrl }: PostProps) => {
         />
         {/* Name and Username */}
         <div className="ml-4">
-          <h3 className="font-bold">Username</h3>
-          <span className="ml-2 text-gray-500">@username</span>
+          <h3 className="text-white font-bold">Username</h3>
+          <span className="text-gray-400">@username</span>
         </div>
       </div>
 
       {/* Post */}
       {/* Post Title */}
-      <h1 className="mt-2">{title}</h1>
+      <h1 className="text-white text-xl font-semibold mb-2">{title}</h1>
       {/* Post Description */}
-      <p className="mt-2">{description}</p>
+      <p className="text-gray-300 mb-4">{description}</p>
       {/* Post Image */}
-      <div className="mt-2 flex justify-center">
+      <div className="flex justify-center mb-4">
         {isLoading ? (
           <Loader />
         ) : (
@@ -103,7 +77,7 @@ const Post = ({ title, description, imageUrl }: PostProps) => {
                 className="rounded-lg"
               />
             ) : (
-              <div>
+              <div className="text-gray-500">
                 No image available! Click Generate Image to create an AI
                 Generated Image.
               </div>
@@ -113,20 +87,20 @@ const Post = ({ title, description, imageUrl }: PostProps) => {
       </div>
 
       {/* Post Buttons */}
-      <div className="flex items-center mt-2 justify-between pt-5">
+      <div className="flex items-center justify-between">
         {/* Right Side Buttons */}
         <div className="flex space-x-4">
           {/* Like Button */}
-          <Button className="text-white px-4 py-2 rounded">Like</Button>
+          <Button className="text-white px-4 py-2">Like</Button>
           {/* Share Button */}
-          <Button className="text-white px-4 py-2 rounded">Share</Button>
+          <Button className="text-white px-4 py-2">Share</Button>
         </div>
         {/* Left Side Buttons */}
         {/* Generate Image Button */}
         <Button
-          className="text-white px-4 py-2 rounded"
+          className="text-white px-4 py-2 flex items-center transition"
           onClick={() => {
-            generateImage(title, description);
+            handleGenerateImage(title, description);
           }}
         >
           <Image src="/gemini.svg" alt="Gemini Image" height={20} width={20} />
@@ -137,4 +111,4 @@ const Post = ({ title, description, imageUrl }: PostProps) => {
   );
 };
 
-export default Post;
+export default PostCard;
