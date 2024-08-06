@@ -18,7 +18,7 @@ Open Your Terminal or Command Prompt
 - Paste the command below and press Enter.
 
 ```bash
-git clone https://github.com/octocat/Hello-World.git
+git clone https://github.com/Anirudh-rb26/Dynamic_SocialMediaPost.git
 ```
 
 **Install Dependencies**
