@@ -13,43 +13,51 @@ export default function Home() {
   );
 
   return (
-    <main className="relative bg-gray-950 min-h-screen flex flex-col justify-center items-center p-4 overflow-auto">
-      <div className="max-w-screen-md m-5 p-2 border rounded-2xl bg-cyan-950">
-        {/* Textboxes for user input */}
-        <div className="mb-4">
-          <label htmlFor="title" className="block text-white mb-2">
-            Post Title:
-          </label>
-          <input
-            id="title"
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full p-2 rounded bg-gray-800 text-white"
-            style={{ minWidth: "400px" }}
+    <main className="relative bg-gray-950 min-h-screen flex flex-col items-center p-4 overflow-auto">
+      <div className="p-1 mb-11">
+        <div className="max-w-screen-sm w-full p-4 border rounded-2xl bg-cyan-950 mb-4">
+          {/* Textboxes for user input */}
+          <div className="mb-4">
+            <label
+              htmlFor="title"
+              className="block text-white mb-2 text-lg font-semibold"
+            >
+              Post Title:
+            </label>
+            <input
+              id="title"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full p-3 rounded bg-gray-800 text-white text-base"
+              style={{ minWidth: "300px" }}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="description"
+              className="block text-white mb-2 text-lg font-semibold"
+            >
+              Post Description:
+            </label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-full p-3 rounded bg-gray-800 text-white text-base"
+              rows={4}
+              style={{ minWidth: "300px" }}
+            />
+          </div>
+        </div>
+        <div className="max-w-screen-sm w-full flex-grow sm:mb-5">
+          <Post
+            title={title}
+            description={description}
+            // If you want to add an image URL dynamically, you can also add an input for that.
+            // imageUrl="vercel.svg"
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="description" className="block text-white mb-2">
-            Post Description:
-          </label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full p-2 rounded bg-gray-800 text-white"
-            rows={4}
-            style={{ minWidth: "400px" }} // Optional: set a minimum width
-          />
-        </div>
-      </div>
-      <div className="max-w-screen-md">
-        <Post
-          title={title}
-          description={description}
-          // If you want to add an image URL dynamically, you can also add an input for that.
-          // imageUrl="vercel.svg"
-        />
       </div>
     </main>
   );
