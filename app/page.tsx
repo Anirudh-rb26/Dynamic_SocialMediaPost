@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <main className="relative bg-gray-950 min-h-screen flex flex-col justify-center items-center p-4 overflow-auto">
-      <div className="max-w-screen-md mb-8">
+      <div className="max-w-screen-md m-5 p-2 border rounded-2xl bg-cyan-950">
         {/* Textboxes for user input */}
         <div className="mb-4">
           <label htmlFor="title" className="block text-white mb-2">
@@ -26,7 +26,7 @@ export default function Home() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="w-full p-2 rounded bg-gray-800 text-white"
-            style={{ minWidth: "600px" }}
+            style={{ minWidth: "400px" }}
           />
         </div>
         <div className="mb-4">
@@ -39,7 +39,7 @@ export default function Home() {
             onChange={(e) => setDescription(e.target.value)}
             className="w-full p-2 rounded bg-gray-800 text-white"
             rows={4}
-            style={{ minWidth: "600px" }} // Optional: set a minimum width
+            style={{ minWidth: "400px" }} // Optional: set a minimum width
           />
         </div>
       </div>
