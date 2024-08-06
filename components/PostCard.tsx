@@ -123,22 +123,15 @@ const Post = ({ title, description, imageUrl }: PostProps) => {
         </div>
         {/* Left Side Buttons */}
         {/* Generate Image Button */}
-        {!imageUrl && !generatedImage && (
-          <Button
-            className="text-white px-4 py-2 rounded"
-            onClick={() => {
-              generateImage(title, description);
-            }}
-          >
-            <Image
-              src="/gemini.svg"
-              alt="Gemini Image"
-              height={20}
-              width={20}
-            />
-            <p className="pl-2">Generate Image</p>
-          </Button>
-        )}
+        <Button
+          className="text-white px-4 py-2 rounded"
+          onClick={() => {
+            generateImage(title, description);
+          }}
+        >
+          <Image src="/gemini.svg" alt="Gemini Image" height={20} width={20} />
+          <p className="pl-2">Generate Image</p>
+        </Button>
       </div>
     </div>
   );
