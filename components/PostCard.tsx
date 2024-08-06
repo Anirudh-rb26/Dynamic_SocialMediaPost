@@ -14,25 +14,62 @@ interface PostProps {
 
 const PostCard: React.FC<PostProps> = ({ title, description, imageUrl }) => {
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false); // State for loading indicator
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleGenerateImage = async (title: string, description: string) => {
-    setIsLoading(true); // Set loading state to true
+    setIsLoading(true);
+    setError(null);
     console.log("Generate Image button clicked");
 
-    const url = await generateImage(title, description); // Call the function from lib
-    if (url) {
-      setGeneratedImage(url);
-      console.log("Image generated and URL set:", url);
+    try {
+      const url = await generateImage(title, description);
+      if (url) {
+        setGeneratedImage(url);
+        console.log("Image generated and URL set:", url);
+      } else {
+        throw new Error("Failed to generate image");
+      }
+    } catch (err) {
+      console.error("Error generating image:", err);
+      setError("Failed to generate image. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false); // Set loading state back to false
+  };
+
+  const handleShare = async () => {
+    const shareUrl = `${window.location.origin}/?title=${encodeURIComponent(
+      title
+    )}&description=${encodeURIComponent(description)}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: title,
+          text: description,
+          url: shareUrl,
+        });
+        console.log("Content shared successfully");
+      } catch (error) {
+        console.error("Error sharing content:", error);
+      }
+    } else {
+      // Fallback for browsers that don't support the Web Share API
+      navigator.clipboard
+        .writeText(shareUrl)
+        .then(() => {
+          alert("Shareable link copied to clipboard!");
+        })
+        .catch((error) => {
+          console.error("Error copying to clipboard:", error);
+        });
+    }
   };
 
   return (
     <div className="bg-gray-900 p-6 rounded-lg shadow-lg mb-6">
       {/* Profile Information */}
       <div className="flex items-center mb-4">
-        {/* Profile Picture */}
         <Image
           src="/profile.svg"
           alt="Profile Picture"
@@ -40,7 +77,6 @@ const PostCard: React.FC<PostProps> = ({ title, description, imageUrl }) => {
           height={30}
           className="rounded-full"
         />
-        {/* Name and Username */}
         <div className="ml-4">
           <h3 className="text-white font-bold">Username</h3>
           <span className="text-gray-400">@username</span>
@@ -48,14 +84,13 @@ const PostCard: React.FC<PostProps> = ({ title, description, imageUrl }) => {
       </div>
 
       {/* Post */}
-      {/* Post Title */}
       <h1 className="text-white text-xl font-semibold mb-2">{title}</h1>
-      {/* Post Description */}
       <p className="text-gray-300 mb-4">{description}</p>
-      {/* Post Image */}
       <div className="flex justify-center mb-4">
         {isLoading ? (
           <Loader />
+        ) : error ? (
+          <div className="text-red-500">{error}</div>
         ) : (
           <>
             {generatedImage ? (
@@ -64,7 +99,7 @@ const PostCard: React.FC<PostProps> = ({ title, description, imageUrl }) => {
                 alt="Generated Image"
                 width={400}
                 height={400}
-                objectFit="contain"
+                style={{ objectFit: "contain" }}
                 className="rounded-lg"
               />
             ) : imageUrl ? (
@@ -73,7 +108,7 @@ const PostCard: React.FC<PostProps> = ({ title, description, imageUrl }) => {
                 alt="Post Image"
                 width={400}
                 height={400}
-                objectFit="contain"
+                style={{ objectFit: "contain" }}
                 className="rounded-lg"
               />
             ) : (
@@ -88,22 +123,24 @@ const PostCard: React.FC<PostProps> = ({ title, description, imageUrl }) => {
 
       {/* Post Buttons */}
       <div className="flex items-center justify-between">
-        {/* Right Side Buttons */}
         <div className="flex space-x-4">
-          {/* Like Button */}
-          <Button className="text-white px-4 py-2">Like</Button>
-          {/* Share Button */}
-          <Button className="text-white px-4 py-2">Share</Button>
+          <Button className="text-white px-4 py-2" aria-label="Like post">
+            Like
+          </Button>
+          <Button
+            className="text-white px-4 py-2"
+            aria-label="Share post"
+            onClick={handleShare}
+          >
+            Share
+          </Button>
         </div>
-        {/* Left Side Buttons */}
-        {/* Generate Image Button */}
         <Button
           className="text-white px-4 py-2 flex items-center transition"
-          onClick={() => {
-            handleGenerateImage(title, description);
-          }}
+          onClick={() => handleGenerateImage(title, description)}
+          aria-label="Generate image using AI"
         >
-          <Image src="/gemini.svg" alt="Gemini Image" height={20} width={20} />
+          <Image src="/gemini.svg" alt="" height={20} width={20} />
           <p className="pl-2">Generate Image</p>
         </Button>
       </div>

@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Post",
-  description: "A Medial Post",
+  description: "A Media Post",
+  // Add default metadata here if needed
 };
 
 export default function RootLayout({
