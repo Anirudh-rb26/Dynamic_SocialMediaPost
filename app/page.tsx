@@ -13,9 +13,9 @@ export default function Home() {
   );
 
   return (
-    <main className="relative bg-gray-950 min-h-screen flex flex-col items-center p-4 overflow-auto">
+    <main className="relative bg-black min-h-screen flex flex-col items-center p-4 overflow-auto">
       <div className="p-1 mb-11">
-        <div className="max-w-screen-sm w-full p-4 border rounded-2xl bg-cyan-950 mb-4">
+        <div className="max-w-screen-sm w-full p-4 border rounded-2xl bg-gray-950 mb-4">
           {/* Textboxes for user input */}
           <div className="mb-4">
             <label
@@ -29,7 +29,7 @@ export default function Home() {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full p-3 rounded bg-gray-800 text-white text-base"
+              className="w-full p-3 rounded bg-gray-900 text-white text-base"
               style={{ minWidth: "300px" }}
             />
           </div>
@@ -44,7 +44,7 @@ export default function Home() {
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-3 rounded bg-gray-800 text-white text-base"
+              className="w-full p-3 rounded bg-gray-900 text-white text-base"
               rows={4}
               style={{ minWidth: "300px" }}
             />

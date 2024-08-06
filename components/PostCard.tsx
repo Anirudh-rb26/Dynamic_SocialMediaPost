@@ -55,7 +55,7 @@ const Post = ({ title, description, imageUrl }: PostProps) => {
   };
 
   return (
-    <div className="flex flex-col p-4 border rounded-2xl bg-cyan-950">
+    <div className="flex flex-col p-4 border rounded-2xl bg-gray-950">
       {/* Profile Information */}
       <div className="flex items-center">
         {/* Profile Picture */}
