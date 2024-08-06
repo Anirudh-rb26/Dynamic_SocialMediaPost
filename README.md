@@ -29,28 +29,6 @@ npm install
 
 ## Configuration
 
-Post Content: Edit _app/page.tsx_ to modify the post's title, description, and optional image URL.
-
-_app/page.tsx_
-
-```tsx
-<Post
-  // Enter post title here
-  title={
-    "AI is changing everything. 🚀 What's the most mind-blowing AI application you've seen?"
-  }
-  // Enter post description
-  description={
-    "From art to medicine, AI is revolutionizing industries. Share your favorite AI-powered tool or innovation! What do you think? #AI #technology #future"
-  }
-
-  // If image url is provided, it shows the image.
-  // If image url is not provided a button to generate an image with the title and description is shown.
-
-  // imageUrl="vercel.svg"
-/>
-```
-
 Image Generation: Configure Hugging Face integration in components/PostCard.tsx.
 
 _components/PostCard.tsx_
